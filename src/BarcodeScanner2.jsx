@@ -1,4 +1,4 @@
-import { BrowserBarcodeReader } from "@zxing/browser";
+import { BrowserQRCodeReader } from "@zxing/browser";
 import { useState, useRef, useEffect } from "react";
 
 const BarcodeScanner = () => {
@@ -7,7 +7,7 @@ const BarcodeScanner = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const codeReader = new BrowserBarcodeReader();
+        const codeReader = new BrowserQRCodeReader();
 
         const initScanner = async () => {
             try {
@@ -21,7 +21,6 @@ const BarcodeScanner = () => {
 
                 const selectedDeviceId = videoDevices[0].deviceId;
 
-                // Start the barcode scanner
                 codeReader.decodeFromVideoDevice(selectedDeviceId, videoRef.current, (scanResult, err) => {
                     if (scanResult) {
                         setResult(scanResult.text);
@@ -33,13 +32,13 @@ const BarcodeScanner = () => {
                     }
                     if (err) {
                         if (err.name !== "NotFoundException") {
-                            setError(err.message);
+                            setError(err.message, "Ошибка сканирования.");
                             console.error(err);
                         }
                     }
                 });
             } catch (err) {
-                setError(err.message);
+                setError(err.message, "Ошибка инициализации камеры.");
                 console.error(err);
             }
         };

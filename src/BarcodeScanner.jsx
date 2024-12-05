@@ -1,4 +1,4 @@
-import { BrowserBarcodeReader } from "@zxing/browser";
+import { BrowserQRCodeReader } from "@zxing/browser";
 import { useState, useRef, useEffect } from "react";
 
 const BarcodeScanner = () => {
@@ -7,7 +7,7 @@ const BarcodeScanner = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const codeReader = new BrowserBarcodeReader();
+        const codeReader = new BrowserQRCodeReader();
 
         const initScanner = async () => {
             try {
@@ -21,7 +21,7 @@ const BarcodeScanner = () => {
 
                 const selectedDeviceId = videoDevices[0].deviceId;
 
-                // Start the barcode scanner
+                // Start the barcode scanner with video stream
                 codeReader.decodeFromVideoDevice(selectedDeviceId, videoRef.current, (scanResult, err) => {
                     if (scanResult) {
                         setResult(scanResult.text);

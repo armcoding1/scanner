@@ -1,44 +1,59 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Webcam from 'react-webcam';
-import jsQR from 'jsqr';
+import { BrowserMultiFormatReader } from '@zxing/library'; // Import the multi-format reader
 
 const BarcodeScanner = () => {
-  const webcamRef = useRef(null);
+  const videoRef = useRef(null);
   const [result, setResult] = useState("Ожидание...");
   const [error, setError] = useState(null);
 
-  const capture = () => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    if (imageSrc) {
-      const code = jsQR(imageSrc, imageSrc.width, imageSrc.height);
-      if (code) {
-        setResult(code.data);
-        console.log(code.data);
-        if (code.data.startsWith("http")) {
-          window.location.href = code.data;
-        }
-      } else {
-        setResult("Не удалось распознать код.");
-      }
-    }
-  };
-
   useEffect(() => {
-    const interval = setInterval(capture, 1000); // Scan every second
-    return () => clearInterval(interval); // Clean up on unmount
+    const codeReader = new BrowserMultiFormatReader(); // Create the reader
+    const initScanner = async () => {
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(device => device.kind === "videoinput");
+
+        if (videoDevices.length === 0) {
+          setError("Камера не найдена.");
+          return;
+        }
+
+        const selectedDeviceId = videoDevices[0].deviceId;
+
+        // Start the barcode scanner
+        codeReader.decodeFromVideoDevice(selectedDeviceId, videoRef.current, (scanResult, err) => {
+          if (scanResult) {
+            setResult(scanResult.text); // Set the result from the scanned barcode
+            console.log(scanResult.text);
+            if (scanResult.text.startsWith("http")) {
+              window.location.href = scanResult.text; // Redirect if it's a URL
+            }
+          }
+
+          if (err) {
+            if (err.name !== "NotFoundException") {
+              setError(err.message); // Set error if scan fails
+              console.error(err);
+            }
+          }
+        });
+      } catch (err) {
+        setError(err.message); // Handle error if camera initialization fails
+        console.error(err);
+      }
+    };
+
+    initScanner();
+
+    return () => {
+      codeReader.reset(); // Cleanup when the component is unmounted
+    };
   }, []);
 
   return (
     <div style={{ textAlign: "center" }}>
       <h1>Сканер штрих-кодов</h1>
-      <Webcam
-        ref={webcamRef}
-        screenshotFormat="image/jpeg"
-        width="100%"
-        videoConstraints={{
-          facingMode: "environment", // Use the back camera on mobile
-        }}
-      />
+      <video ref={videoRef} style={{ width: "100%", maxWidth: "400px", border: "1px solid black" }} />
       <p>Результат: <strong>{result}</strong></p>
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>

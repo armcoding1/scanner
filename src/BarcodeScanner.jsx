@@ -18,7 +18,9 @@ const BarcodeScanner = () => {
           return;
         }
 
-        const selectedDeviceId = videoDevices[0].deviceId;
+        // Prioritize the rear camera
+        const rearCamera = videoDevices.find(device => device.label.toLowerCase().includes('back') || device.facing === 'environment');
+        const selectedDeviceId = rearCamera ? rearCamera.deviceId : videoDevices[0].deviceId; // If rear camera found, use it, otherwise fall back to the first available
 
         // Start the barcode scanner
         codeReader.decodeFromVideoDevice(selectedDeviceId, videoRef.current, (scanResult, err) => {

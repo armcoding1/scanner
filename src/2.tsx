@@ -4,7 +4,7 @@ import { BrowserMultiFormatReader } from '@zxing/library'; // Import the multi-f
 const BarcodeScanner = () => {
   const videoRef = useRef(null);
   const [result, setResult] = useState("Ожидание...");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null); // State to hold error messages
 
   useEffect(() => {
     const codeReader = new BrowserMultiFormatReader(); // Create the reader
@@ -25,8 +25,10 @@ const BarcodeScanner = () => {
           if (scanResult) {
             setResult(scanResult.text); // Set the result from the scanned barcode
             console.log(scanResult.text);
+
+            // If the result is a URL, navigate to it
             if (scanResult.text.startsWith("http")) {
-              window.location.href = scanResult.text; // Redirect if it's a URL
+              window.location.href = scanResult.text; // Open the URL in the same window
             }
           }
 
@@ -55,7 +57,7 @@ const BarcodeScanner = () => {
       <h1>Сканер штрих-кодов</h1>
       <video ref={videoRef} style={{ width: "100%", maxWidth: "400px", border: "1px solid black" }} />
       <p>Результат: <strong>{result}</strong></p>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>} {/* Display error message */}
     </div>
   );
 };

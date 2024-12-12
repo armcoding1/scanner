@@ -58,6 +58,7 @@ const BarcodeScanner = () => {
             <p className="scanner__descr">Наведите камеру на штрихкод в билете</p>
             <video ref={videoRef} style={{ width: "100%", maxWidth: "400px" }} />
             {result !== "Ожидание..." ? <p><strong>{result} найден</strong></p> : ""}
+            {error && <p style={{ color: "red" }}>{error}</p>}
         </div>
     );
 };

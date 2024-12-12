@@ -57,7 +57,7 @@ const BarcodeScanner = () => {
             <h1 className="scanner__title">Скан билетов</h1>
             <p className="scanner__descr">Наведите камеру на штрихкод в билете</p>
             <video ref={videoRef} style={{ width: "100%", maxWidth: "400px" }} />
-            {result != "Ожидание..." ? <p><strong>{result} найден</strong></p> : ""}
+            {result !== "Ожидание..." ? <p><strong>{result} найден</strong></p> : ""}
         </div>
     );
 };

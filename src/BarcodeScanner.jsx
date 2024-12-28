@@ -69,6 +69,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/library';
 import "./scanner.css";
+import BackButton from './BackButton';
 
 const BarcodeScanner = () => {
     const videoRef = useRef(null);

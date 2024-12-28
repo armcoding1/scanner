@@ -64,7 +64,6 @@
 // };
 
 // export default BarcodeScanner;
-
 import React, { useState, useRef, useEffect } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/library';
 import "./scanner.css";
@@ -73,6 +72,7 @@ const BarcodeScanner = () => {
     const videoRef = useRef(null);
     const [result, setResult] = useState("Ожидание...");
     const [error, setError] = useState(null);
+    const [ticketStatus, setTicketStatus] = useState(null);
 
     useEffect(() => {
         const codeReader = new BrowserMultiFormatReader();
@@ -100,11 +100,16 @@ const BarcodeScanner = () => {
                             if (response.ok) {
                                 const data = await response.json();
                                 console.log("Response Data:", data);
+                                setTicketStatus("Билет найден");
+                            } else if (response.status === 404) {
+                                setTicketStatus("Билет не найден");
                             } else {
                                 console.error("Ошибка запроса:", response.statusText);
+                                setTicketStatus("Ошибка сервера");
                             }
                         } catch (fetchError) {
                             console.error("Ошибка при выполнении запроса:", fetchError);
+                            setTicketStatus("Ошибка подключения");
                         }
                     }
 
@@ -134,6 +139,7 @@ const BarcodeScanner = () => {
             <p className="scanner__descr">Наведите камеру на штрихкод в билете</p>
             <video ref={videoRef} style={{ width: "100%", maxWidth: "400px" }} />
             {result !== "Ожидание..." ? <p><strong>{result} найден</strong></p> : ""}
+            {ticketStatus && <p style={{ color: ticketStatus === "Билет найден" ? "green" : "red" }}>{ticketStatus}</p>}
             {error && <p style={{ color: "red" }}>{error}</p>}
         </div>
     );

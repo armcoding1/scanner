@@ -99,6 +99,10 @@ const BarcodeScanner = () => {
         }
     };
 
+    const handleBack = () => {
+        console.log("Назад");
+    };
+
     useEffect(() => {
         const codeReader = new BrowserMultiFormatReader();
         const initScanner = async () => {
@@ -160,6 +164,7 @@ const BarcodeScanner = () => {
 
     return (
         <div className="scanner">
+            <BackButton onClick={handleBack} />
             <h1 className="scanner__title">Скан билетов</h1>
             <p className="scanner__descr">Наведите камеру на штрихкод в билете</p>
             <video ref={videoRef} style={{ width: "100%", height: "200px" }} />

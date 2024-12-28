@@ -90,7 +90,7 @@ const BarcodeScanner = () => {
                 const selectedDeviceId = rearCamera ? rearCamera.deviceId : videoDevices[0].deviceId;
 
                 codeReader.decodeFromVideoDevice(selectedDeviceId, videoRef.current, async (scanResult, err) => {
-                    if (scanResult) {
+                    // if (scanResult) {
                         const scannedCode = scanResult.text;
                         setResult(scannedCode);
                         console.log(scannedCode);
@@ -111,7 +111,7 @@ const BarcodeScanner = () => {
                             console.error("Ошибка при выполнении запроса:", fetchError);
                             setTicketStatus("Ошибка подключения");
                         }
-                    }
+                    // }
 
                     if (err) {
                         if (err.name !== "NotFoundException") {

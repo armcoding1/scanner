@@ -56,7 +56,6 @@
 
 .scanner__video {
     margin-bottom: 30px;
-    width: 100vw !important;
     width: 100% !important;
     height: 200px;
 }
@@ -109,4 +108,12 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
+}
+
+.scanner__footer__text {
+    color: #FFFFFF;
+}
+
+.scanner__footer__link {
+    color: #FFFFFF;
 }

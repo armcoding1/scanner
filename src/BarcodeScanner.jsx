@@ -65,12 +65,12 @@
 
 // export default BarcodeScanner;
 
-
 import React, { useState, useRef, useEffect } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/library';
 import "./scanner.css";
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import errorIcon from "./assets/error.png";
 
 const BarcodeScanner = () => {
     const videoRef = useRef(null);
@@ -166,19 +166,33 @@ const BarcodeScanner = () => {
 
     return (
         <div className="scanner">
-            <IconButton onClick={handleBack} style={{ position: 'absolute', top: '10px', left: '10px' }}>
-                <ArrowBackIcon />
-            </IconButton>
-            <h1 className="scanner__title">Скан билетов</h1>
+            <header className="scanner__header">
+                <IconButton onClick={handleBack} className="back-button">
+                    <ArrowBackIcon />
+                </IconButton>
+                <h1 className="scanner__title">Скан билетов</h1>
+            </header>
             <p className="scanner__descr">Наведите камеру на штрихкод в билете</p>
-            <video ref={videoRef} style={{ width: "100%", height: "200px" }} />
+            <video ref={videoRef} style={{ width: "100%", height: "200px" }} className="scanner__video" />
             {result !== "Ожидание..." ? <p><strong>{result} найден</strong></p> : ""}
             {ticketStatus && <p style={{ color: ticketStatus === "Билет найден" ? "green" : "red" }}>{ticketStatus}</p>}
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && (
+                <div className='scanner__error'>
+                    <div className="scanner__error__header">
+                        <img src={errorIcon} alt="Error icon" className="scanner__error__img" />
+                        <span className="scanner__error__title">Произошла ошибка</span>
+                    </div>
+                    <p className="scanner__error__text">{error}</p>
+                </div>
+            )}
 
-            <button onClick={() => setManualInputVisible(!manualInputVisible)} className="manual-input-button">
-                Ввести код вручную
-            </button>
+            <div className="scanner__btns">
+                <button onClick={() => setManualInputVisible(!manualInputVisible)} className="scanner__manual-button">
+                    Ввести код вручную
+                </button>
+                <button className="scanner__btns__btn">Как пользоваться?</button>
+                <button className="scanner__btns__btn">Список билетов</button>
+            </div>
             {manualInputVisible && (
                 <div className="manual-input">
                     <input
@@ -190,6 +204,10 @@ const BarcodeScanner = () => {
                     <button onClick={handleManualSubmit}>Отправить</button>
                 </div>
             )}
+            <footer className="scanner__footer">
+                <p className="scanner__footer__text">Возникли вопросы?</p>
+                <a href="/support" className="scanner__footer__link">Связаться с поддержкой</a>
+            </footer>
         </div>
     );
 };

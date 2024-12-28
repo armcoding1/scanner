@@ -97,11 +97,11 @@ const BarcodeScanner = () => {
 
                         try {
                             const response = await fetch(`http://localhost:8008/api/tickets/barcode/?barcode=${scannedCode}`);
-                            if (response.ok) {
-                                const data = await response.json();
-                                console.log("Response Data:", data);
-                                setTicketStatus("Билет найден");
-                            } else if (response.status === 404) {
+
+                            const data = await response.json();
+                            console.log("Response Data:", data);
+                            setTicketStatus("Билет найден");
+                            if (response.status === 404) {
                                 setTicketStatus("Билет не найден");
                             } else {
                                 console.error("Ошибка запроса:", response.statusText);

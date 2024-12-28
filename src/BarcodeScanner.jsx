@@ -165,7 +165,9 @@ const BarcodeScanner = () => {
 
     return (
         <div className="scanner">
-            <BackButton onClick={handleBack} />
+            <IconButton onClick={handleBack} style={{ position: 'absolute', top: '10px', left: '10px' }}>
+                <ArrowBackIcon />
+            </IconButton>
             <h1 className="scanner__title">Скан билетов</h1>
             <p className="scanner__descr">Наведите камеру на штрихкод в билете</p>
             <video ref={videoRef} style={{ width: "100%", height: "200px" }} />

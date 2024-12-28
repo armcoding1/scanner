@@ -56,6 +56,9 @@
 
 .scanner__video {
     margin-bottom: 30px;
+    width: 100vw !important;
+    width: 100% !important;
+    height: 200px;
 }
 
 .scanner__error__header {

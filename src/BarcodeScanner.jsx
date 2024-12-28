@@ -173,8 +173,8 @@ const BarcodeScanner = () => {
                 <h1 className="scanner__title">Скан билетов</h1>
             </header>
             <p className="scanner__descr">Наведите камеру на штрихкод в билете</p>
-            <video ref={videoRef} className="scanner__video" />
-            {result !== "Ожидание..." ? <p><strong>{result} найден</strong></p> : ""}
+            <video width="100%" ref={videoRef} className="scanner__video" />
+            {result !== "Ожидание..." ? <p style={{ color: "white" }}><strong>{result} найден</strong></p> : ""}
             {ticketStatus && <p style={{ color: ticketStatus === "Билет найден" ? "green" : "red" }}>{ticketStatus}</p>}
             {error && (
                 <div className='scanner__error'>

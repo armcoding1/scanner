@@ -146,7 +146,7 @@ const BarcodeScanner = () => {
                     }
                 });
             } catch (err) {
-                setError(err.message);
+                // setError(err.message);
                 console.error(err);
             }
         };
